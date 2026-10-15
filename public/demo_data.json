@@ -1,0 +1,230 @@
+{
+  "status": "COMPLETED",
+  "intake": {
+    "status": "VALID",
+    "intake_timestamp": "2026-10-15T12:26:48.629499+05:30",
+    "donor_name": "Lingaraj Seva Samiti",
+    "donor_type": "Religious / Temple Trust",
+    "area": "Old Town",
+    "lat": 20.24,
+    "lng": 85.835,
+    "items": [
+      {
+        "name": "hot consecrated Mahaprasa",
+        "qty": 50,
+        "unit": "packets",
+        "veg": true
+      }
+    ],
+    "total_quantity": 50,
+    "storage_condition": "hot_insulated",
+    "cooked_at": "2026-10-15T13:30:00+05:30",
+    "expires_at": "2026-10-15T19:30:00+05:30",
+    "contact": "9438012345",
+    "raw_text": "Lingaraj Seva Samiti, Old Town Bhubaneswar. 50 packets of hot consecrated Mahaprasad (Kanika sweet rice, Dalma lentil stew, and Kheeri). Cooked fresh at 1:30 PM, kept steaming in covered clay vats above 65C, safe until 7:30 PM. Contact: Narayan Panda, 9438012345.",
+    "confidence_score": 1.0,
+    "matched_substrings": {
+      "contact": "9438012345",
+      "area": "Old Town",
+      "quantity": "50 packets",
+      "cooked_at": "1:30 pm",
+      "expires_at": "7:30 pm"
+    }
+  },
+  "safety": {
+    "verdict": "SAFE",
+    "minutes_remaining": 393.2,
+    "effective_cutoff": "2026-10-15T19:30:00+05:30",
+    "evaluated_at": "2026-10-15T12:26:48.629499+05:30",
+    "reasons": [
+      "Storage verified: Kept in insulated thermal containers above 60C (extended 6.0h window).",
+      "Safe for redistribution with 393.2 minutes remaining before cutoff."
+    ],
+    "handling_instructions": [
+      "Maintain insulated container closures during transit. Do not unseal until delivery.",
+      "Standard sanitary transport. Verify seal integrity and aroma upon handover."
+    ],
+    "disclaimer": "Final sensory inspection and acceptance judgment always rests with the designated receiving welfare organization."
+  },
+  "matches": {
+    "total_meals": 50,
+    "is_veg": true,
+    "evaluated_at": "2026-10-15T12:26:48.629499+05:30",
+    "total_recipients_evaluated": 12,
+    "viable_open_recipients_count": 10,
+    "split_plan": null,
+    "top_matches": [
+      {
+        "id": "REC09",
+        "name": "Bindu Sagar Community Kitchen (MOCK)",
+        "area": "Old Town",
+        "lat": 20.241,
+        "lng": 85.8345,
+        "capacity": 80,
+        "available_from": "10:00",
+        "available_until": "23:59",
+        "contact": "9861001130",
+        "distance_km": 0.12,
+        "eta_minutes": 12.4,
+        "match_score": 93.1,
+        "score_breakdown": {
+          "distance": 99.2,
+          "capacity": 81.2,
+          "dietary": 100.0,
+          "time_window": 100.0,
+          "need": 80.0
+        },
+        "reason": "0.12km away in Old Town, cap 80 meals. Open (411 min buffer before closing at 23:59)."
+      },
+      {
+        "id": "REC05",
+        "name": "Sai Kripa Anath Ashram (MOCK)",
+        "area": "Saheed Nagar",
+        "lat": 20.2895,
+        "lng": 85.8462,
+        "capacity": 50,
+        "available_from": "07:00",
+        "available_until": "23:00",
+        "contact": "9861001126",
+        "distance_km": 5.63,
+        "eta_minutes": 28.9,
+        "match_score": 88.7,
+        "score_breakdown": {
+          "distance": 62.5,
+          "capacity": 100.0,
+          "dietary": 100.0,
+          "time_window": 100.0,
+          "need": 100.0
+        },
+        "reason": "5.63km away in Saheed Nagar, cap 50 meals. Open (394 min buffer before closing at 23:00)."
+      },
+      {
+        "id": "REC07",
+        "name": "Mother Teresa Home of Peace (MOCK)",
+        "area": "Unit 4",
+        "lat": 20.2745,
+        "lng": 85.8312,
+        "capacity": 30,
+        "available_from": "07:00",
+        "available_until": "22:00",
+        "contact": "9861001128",
+        "distance_km": 3.86,
+        "eta_minutes": 23.6,
+        "match_score": 82.3,
+        "score_breakdown": {
+          "distance": 74.3,
+          "capacity": 60.0,
+          "dietary": 100.0,
+          "time_window": 100.0,
+          "need": 100.0
+        },
+        "reason": "3.86km away in Unit 4, cap 30 meals. Open (400 min buffer before closing at 22:00)."
+      }
+    ]
+  },
+  "pickup": {
+    "status": "CONFIRMED",
+    "verdict_message": "CONFIRMED: Deliverable within 16 minutes (safety limit: 393.2 mins).",
+    "assigned_volunteer": {
+      "id": "VOL06",
+      "name": "Bikram Samal (MOCK)",
+      "area": "Old Town",
+      "vehicle": "auto",
+      "contact": "9437011006",
+      "dist_to_donor_km": 0.35
+    },
+    "destinations": [
+      {
+        "id": "REC09",
+        "name": "Bindu Sagar Community Kitchen (MOCK)",
+        "area": "Old Town",
+        "lat": 20.241,
+        "lng": 85.8345,
+        "meals": 50,
+        "contact": "9861001130"
+      }
+    ],
+    "total_distance_km": 0.47,
+    "total_eta_minutes": 16.4,
+    "minutes_remaining_buffer": 376.8,
+    "route_steps": [
+      {
+        "step": 1,
+        "type": "PICKUP",
+        "location_name": "Lingaraj Seva Samiti (Old Town)",
+        "action": "Pickup 50 meal packets from donor",
+        "distance_km": 0.35,
+        "drive_time_min": 1.0,
+        "cumulative_time_min": 11.0,
+        "lat": 20.24,
+        "lng": 85.835
+      },
+      {
+        "step": 2,
+        "type": "DROPOFF",
+        "location_name": "Bindu Sagar Community Kitchen (MOCK) (Old Town)",
+        "action": "Handover 50 meals to Bindu Sagar Community Kitchen (MOCK) (Contact: 9861001130)",
+        "distance_km": 0.12,
+        "drive_time_min": 0.4,
+        "cumulative_time_min": 16.4,
+        "lat": 20.241,
+        "lng": 85.8345
+      }
+    ]
+  },
+  "notifications": {
+    "status": "SUCCESS",
+    "mission_id": "OD-5060",
+    "languages": [
+      "English",
+      "Hindi",
+      "Odia"
+    ],
+    "messages": {
+      "donor": {
+        "en": "🙏 *AnnaSetu Bhubaneswar Dispatch*\nHello Lingaraj Seva Samiti, thank you for donating 50 meals! Our volunteer *Bikram Samal (MOCK)* (auto) is en route to pickup from Old Town.\n⏱️ *Pickup ETA:* ~11 mins\n📞 *Volunteer Contact:* 9437011006\nRecipient: Bindu Sagar Community Kitchen (MOCK)\n*Zero Food Waste, Zero Hunger.*",
+        "hi": "🙏 *अन्नसेतु भुवनेश्वर सूचना*\nनमस्ते Lingaraj Seva Samiti, 50 भोजन पैकेट दान करने के लिए धन्यवाद! हमारे स्वयंसेवक *Bikram Samal (MOCK)* (auto) आपके स्थान (Old Town) पर आ रहे हैं।\n⏱️ *पिकअप समय:* लगभग 11 मिनट\n📞 *संपर्क:* 9437011006\n*अन्न बचाएं, जीवन संवारें।*",
+        "or": "🙏 *ଅନ୍ନସେତୁ ଭୁବନେଶ୍ୱର ସୂଚନା*\nନମସ୍କାର Lingaraj Seva Samiti, 50 ଖାଦ୍ୟ ପ୍ୟାକେଟ ଦାନ ପାଇଁ ଧନ୍ୟବାଦ! ଆମର ସ୍ୱେଚ୍ଛାସେବୀ *Bikram Samal (MOCK)* (Old Town) ଠାରୁ ଖାଦ୍ୟ ସଂଗ୍ରହ କରିବାକୁ ଆସୁଛନ୍ତି।\n⏱️ *ପହଞ୍ଚିବା ସମୟ:* ~11 ମିନିଟ୍\n📞 *ଫୋନ୍:* 9437011006\n*ଖାଦ୍ୟ ନଷ୍ଟ ନକରିବା, କ୍ଷୁଧା ମୁକ୍ତ କରିବା।*"
+      },
+      "recipient": {
+        "en": "🍲 *AnnaSetu Food Relief Alert*\nHello Bindu Sagar Community Kitchen (MOCK), fresh surplus food is on the way!\n📦 *Items:* 50 hot consecrated Mahaprasa (50 meals)\n📍 *Source:* Lingaraj Seva Samiti, Old Town\n🚚 *Volunteer:* Bikram Samal (MOCK) (9437011006)\n⏱️ *Expected Drop:* ~16 mins (Consume by 2026-10-15T19:30:00+05:30).",
+        "hi": "🍲 *अन्नसेतु राहत सूचना*\nनमस्ते Bindu Sagar Community Kitchen (MOCK), आपके लिए ताजा भोजन आ रहा है!\n📦 *विवरण:* 50 hot consecrated Mahaprasa (50 पैकेट)\n📍 *स्रोत:* Lingaraj Seva Samiti, Old Town\n🚚 *स्वयंसेवक:* Bikram Samal (MOCK) (9437011006)\n⏱️ *पहुंचने का समय:* ~16 मिनट (कृपया 2026-10-15T19:30:00+05:30 से पहले वितरित करें)।",
+        "or": "🍲 *ଅନ୍ନସେତୁ ସହାୟତା ବାର୍ତ୍ତା*\nନମସ୍କାର Bindu Sagar Community Kitchen (MOCK), ଆପଣଙ୍କ ନିକଟକୁ ସତେଜ ଖାଦ୍ୟ ଆସୁଅଛି!\n📦 *ବିବରଣୀ:* 50 hot consecrated Mahaprasa (50 ଟି ପ୍ୟାକେଟ)\n📍 *ଉତ୍ସ:* Lingaraj Seva Samiti, Old Town\n🚚 *ସ୍ୱେଚ୍ଛାସେବୀ:* Bikram Samal (MOCK) (9437011006)\n⏱️ *ପହଞ୍ଚିବା ସମୟ:* ~16 ମିନିଟ୍ (ଦୟାକରି 2026-10-15T19:30:00+05:30 ପୂର୍ବରୁ ବଣ୍ଟନ କରନ୍ତୁ)।"
+      },
+      "volunteer": {
+        "en": "🚨 *AnnaSetu Volunteer Mission #OD-5060*\nVolunteer: *Bikram Samal (MOCK)*\n\n1️⃣ *PICKUP:* Lingaraj Seva Samiti\n📍 Area: Old Town\n📞 Contact: 9438012345\n📦 Collect: 50 meals (50 hot consecrated Mahaprasa)\n\n2️⃣ *DROPOFF:* Bindu Sagar Community Kitchen (MOCK) (Old Town) [50 meals, Contact: 9861001130]\n\n⏱️ *Critical Limit:* Deliver within 393.2 mins\nSafety: Check thermal seals & aroma upon pickup.",
+        "hi": "🚨 *अन्नसेतु स्वयंसेवक मिशन #OD-5060*\nस्वयंसेवक: *Bikram Samal (MOCK)*\n\n1️⃣ *पिकअप:* Lingaraj Seva Samiti\n📍 क्षेत्र: Old Town\n📞 संपर्क: 9438012345\n📦 सामग्री: 50 पैकेट (50 hot consecrated Mahaprasa)\n\n2️⃣ *वितरण स्थल:* Bindu Sagar Community Kitchen (MOCK) (Old Town) [50 पैकेट]\n\n⏱️ *समय सीमा:* 393.2 मिनट के भीतर पूरा करें।",
+        "or": "🚨 *ଅନ୍ନସେତୁ ସ୍ୱେଚ୍ଛାସେବୀ ଦାୟିତ୍ୱ #OD-5060*\nସ୍ୱେଚ୍ଛାସେବୀ: *Bikram Samal (MOCK)*\n\n1️⃣ *ଖାଦ୍ୟ ସଂଗ୍ରହ:* Lingaraj Seva Samiti\n📍 ସ୍ଥାନ: Old Town\n📞 ଫୋନ୍: 9438012345\n📦 ପରିମାଣ: 50 ଟି ଖାଦ୍ୟ ପ୍ୟାକେଟ (50 hot consecrated Mahaprasa)\n\n2️⃣ *ବଣ୍ଟନ କେନ୍ଦ୍ର:* Bindu Sagar Community Kitchen (MOCK) (Old Town) [50 ଟି]\n\n⏱️ *ସମୟ ସୀମା:* 393.2 ମିନିଟ୍ ମଧ୍ୟରେ ପହଞ୍ଚାନ୍ତୁ।"
+      }
+    }
+  },
+  "impact": {
+    "status": "SUCCESS",
+    "this_listing": {
+      "listing_id": "OD-10151226",
+      "meals_saved": 50,
+      "kg_diverted": 20.0,
+      "co2e_avoided_kg": 50.0,
+      "economic_value_inr": 3000.0,
+      "donor": "Lingaraj Seva Samiti (Old Town)",
+      "recipients_served": [
+        "Bindu Sagar Community Kitchen (MOCK)"
+      ],
+      "volunteer": "Bikram Samal (MOCK)"
+    },
+    "assumptions": {
+      "kg_food_per_meal": 0.4,
+      "co2e_per_kg_food": 2.5,
+      "inr_value_per_meal": 60.0
+    },
+    "cumulative": {
+      "total_dispatches": 23,
+      "total_meals_saved": 1380,
+      "total_kg_diverted": 552.0,
+      "total_co2e_avoided_kg": 1380.0,
+      "total_economic_value_inr": 82800.0,
+      "unique_donors_served": 12,
+      "unique_recipients_served": 11
+    }
+  }
+}

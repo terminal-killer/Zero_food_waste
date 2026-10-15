@@ -1,0 +1,26 @@
+{
+  "name": "ideasprint-ai",
+  "version": "1.0.0",
+  "description": "Autonomous AI Hackathon Project Generator, Task-Model Fit Evaluator & MVP Accelerator",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node tests/api.test.js"
+  },
+  "keywords": [
+    "hackathon",
+    "ai",
+    "mvp",
+    "architecture",
+    "llm-patterns",
+    "task-model-fit"
+  ],
+  "author": "IdeaSprint Team",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  }
+}

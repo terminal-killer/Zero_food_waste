@@ -1,0 +1,7 @@
+id,name,area,lat,lng,vehicle,capacity_packets,status,contact
+VOL01,Subrat Mohapatra (MOCK),Patia,20.3540,85.8175,bike,30,AVAILABLE,9437011001
+VOL02,Priyanka Das (MOCK),Jaydev Vihar,20.3010,85.8205,scooter,25,AVAILABLE,9437011002
+VOL03,Amitabh Jena (MOCK),Saheed Nagar,20.2910,85.8440,auto,90,AVAILABLE,9437011003
+VOL04,Debashis Sahoo (MOCK),Chandrasekharpur,20.3270,85.8160,bike,30,AVAILABLE,9437011004
+VOL05,Rasmita Nayak (MOCK),Nayapalli,20.2950,85.8110,bike,25,AVAILABLE,9437011005
+VOL06,Bikram Samal (MOCK),Old Town,20.2430,85.8360,auto,80,AVAILABLE,9437011006

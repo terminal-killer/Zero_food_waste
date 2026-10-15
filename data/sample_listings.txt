@@ -1,0 +1,17 @@
+LISTING_1 (Clean Standard Listing - Patia)
+Wedding banquet at Royal Garden Hall, Patia. We have 40 veg biryani packets and 20 rasgulla sweet cups. Prepared at 6:30 PM, expires at 10:30 PM. Sealed foil boxes, kept warm in insulated hot containers. Contact: Ramesh Dash, 9861122334.
+
+LISTING_2 (Large Batch Requiring Split - Saheed Nagar)
+Corporate Tech Summit at Fortune Towers, Saheed Nagar. 90 sealed boxed meals (50 veg fried rice & paneer, 40 egg meal boxes). Cooked at 7:00 PM, expires at 11:30 PM. Packed in sanitized takeaway containers. Contact: Smruti Ranjan, 9437199881.
+
+LISTING_3 (Borderline Time-Critical - Jaydev Vihar)
+Catering banquet at Jaydev Vihar near Pal Heights. 35 packed containers of jeera rice and dal makhani. Cooked at 5:00 PM at ambient room temperature, expires at 8:30 PM (Current simulation time: 7:55 PM, only 35 minutes remaining). Contact: Chef Anup, 9853011223.
+
+LISTING_4 (MUST BE REJECTED - Contaminated / Leftover / Expired - Khandagiri)
+Community feast at Khandagiri Mandap. We have opened buffet trays and half-eaten leftover plate food from lunch buffet. Cooked at 1:00 PM, sitting unchilled on open counter until 9:30 PM (over 8.5 hours old). About 25 plates. Contact: Bhabani Sankar, 9861998877.
+
+LISTING_5 (Pure Veg Temple Prasad - Old Town)
+Lingaraj Seva Samiti, Old Town Bhubaneswar. 50 packets of hot consecrated Mahaprasad (Kanika sweet rice, Dalma lentil stew, and Kheeri). Cooked fresh at 1:30 PM, kept steaming in covered clay vats above 65C, safe until 7:30 PM. Contact: Narayan Panda, 9438012345.
+
+LISTING_6 (Packaged Evening Food - Nayapalli)
+Artisan Bakery near Indradhanu Market, Nayapalli. 30 freshly packed vegetarian vegetable patties and multigrain rolls. Baked at 5:00 PM, good until 11:00 PM. Sealed in food-grade kraft paper bags. Contact: Minati Patra, 9937123456.

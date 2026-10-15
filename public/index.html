@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IdeaSprint AI — Autonomous AI Hackathon & MVP Accelerator</title>
+  <meta name="description" content="Turn hackathon ideas into production-ready blueprints, task-model fit audits, fullstack architectures, and interactive sandbox MVPs in seconds.">
+  <meta name="keywords" content="Hackathon, AI MVP, LLM Patterns, Task-Model Fit, System Architecture, Code Generator">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  
+  <!-- Preconnect & Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/pipeline.css">
+  <link rel="stylesheet" href="css/blueprint.css">
+  <link rel="stylesheet" href="css/sandbox.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <a href="#" class="nav-brand" id="nav-brand-logo">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+        </svg>
+      </div>
+      <span class="brand-title">IdeaSprint AI</span>
+      <span class="brand-badge">Autonomous Hackathon Copilot</span>
+    </a>
+
+    <div class="nav-actions">
+      <div class="status-pill" id="backend-status-pill">
+        <span class="status-indicator"></span>
+        <span id="backend-status-text">Engine Online (v1.0)</span>
+      </div>
+
+      <div class="timer-pill" id="hackathon-timer-pill" title="60-Minute Hackathon Sprint Clock">
+        <span>⏱️</span>
+        <span id="hackathon-timer">59:45 remaining</span>
+      </div>
+
+      <button class="btn btn-secondary btn-sm" id="btn-settings" title="Engine & API Provider Settings">
+        ⚙️ Settings
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+    
+    <!-- Hero Header -->
+    <section class="hero" id="hero-section">
+      <div class="hero-tag">
+        <span>⚡</span> Powered by @project-development & @llm-app-patterns
+      </div>
+      <h1>From Zero to Hackathon MVP <br><span class="gradient-text">In Under 60 Seconds</span></h1>
+      <p class="hero-subtitle">
+        Autonomous problem decomposition, task-model fit evaluation, senior full-stack architecture, and interactive live sandbox ready to pitch to hackathon judges.
+      </p>
+    </section>
+
+    <!-- Project Selector & Generator -->
+    <section class="glass-card generator-box" id="generator-section">
+      <div class="section-title">
+        <span>💡 Step 1: Choose or Describe Your Hackathon Project</span>
+        <button class="btn btn-secondary btn-sm" id="btn-surprise">🎲 Surprise Me</button>
+      </div>
+
+      <!-- Presets Cards Carousel -->
+      <div class="presets-grid" id="presets-container">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+
+      <!-- Custom Input Form -->
+      <div class="input-row">
+        <input 
+          type="text" 
+          id="custom-topic-input" 
+          class="input-field" 
+          placeholder="Or enter custom concept (e.g. 'Automated Medical Image Classifier' or 'DeFi Anomaly Sentinel')..."
+        >
+        <select id="track-select" class="input-field" style="max-width: 220px;">
+          <option value="AI & Cloud Systems">Track: AI & Cloud Systems</option>
+          <option value="Developer Tools & Infra">Track: DevTools & Infra</option>
+          <option value="Healthcare & Life Sciences">Track: Health & Bio</option>
+          <option value="FinTech & Web3">Track: FinTech & Web3</option>
+          <option value="EdTech & Learning">Track: EdTech & Learning</option>
+          <option value="Climate & Sustainability">Track: Climate & ESG</option>
+        </select>
+        <button class="btn btn-primary" id="btn-generate">
+          <span>🚀 Generate Full MVP</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Multi-Agent Pipeline Runner Section -->
+    <section class="glass-card pipeline-wrapper" id="pipeline-section">
+      <div class="pipeline-header">
+        <div class="pipeline-title">
+          <span class="status-indicator"></span>
+          <span id="pipeline-status-heading">Orchestrating Autonomous AI Pipeline...</span>
+        </div>
+        <span id="pipeline-percent" style="font-family: var(--font-mono); font-weight: 700; color: var(--cyan);">0%</span>
+      </div>
+
+      <div class="pipeline-progress-bar-bg">
+        <div class="pipeline-progress-bar-fill" id="pipeline-progress-fill"></div>
+      </div>
+
+      <!-- 4 Autonomous Stages -->
+      <div class="pipeline-steps-grid">
+        <div class="step-card" id="step-card-1">
+          <div class="step-badge">1</div>
+          <div class="step-info">
+            <h4>Task-Model Fit Audit</h4>
+            <p>Evaluating LLM strengths vs deterministic boundary</p>
+          </div>
+        </div>
+        <div class="step-card" id="step-card-2">
+          <div class="step-badge">2</div>
+          <div class="step-info">
+            <h4>Value Moat & Personas</h4>
+            <p>Synthesizing elevator pitch & target users</p>
+          </div>
+        </div>
+        <div class="step-card" id="step-card-3">
+          <div class="step-badge">3</div>
+          <div class="step-info">
+            <h4>Fullstack Architecture</h4>
+            <p>Generating REST API, DB schema & RAG pattern</p>
+          </div>
+        </div>
+        <div class="step-card" id="step-card-4">
+          <div class="step-badge">4</div>
+          <div class="step-info">
+            <h4>Interactive Sandbox</h4>
+            <p>Compiling live simulation & judge pitch deck</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Terminal Agent Logs -->
+      <div class="terminal-card" id="terminal-output">
+        <div class="terminal-line">
+          <span class="timestamp">[10:00:00]</span>
+          <span class="badge-agent">[System]</span>
+          <span>Pipeline initialized. Ready to trigger agent workflow.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Blueprint & MVP Workspace Section -->
+    <section class="blueprint-section" id="blueprint-section">
+      
+      <!-- Workspace Navigation Tabs -->
+      <nav class="tabs-nav" id="blueprint-tabs" role="tablist">
+        <button class="tab-btn active" id="tab-pitch" data-tab="pane-pitch">🎯 Pitch & Moat</button>
+        <button class="tab-btn" id="tab-taskfit" data-tab="pane-taskfit">🧠 Task-Model Fit Audit</button>
+        <button class="tab-btn" id="tab-arch" data-tab="pane-arch">🏛️ System Architecture</button>
+        <button class="tab-btn" id="tab-sandbox" data-tab="pane-sandbox">🧪 Interactive Sandbox</button>
+        <button class="tab-btn" id="tab-slides" data-tab="pane-slides">📽️ Pitch Deck Mode</button>
+        <button class="tab-btn" id="tab-export" data-tab="pane-export">📄 Export PRD</button>
+      </nav>
+
+      <!-- TAB 1: Pitch & Moat -->
+      <div class="tab-pane active" id="pane-pitch">
+        <div class="glass-card pitch-hero-card">
+          <div class="pitch-hero-header">
+            <div>
+              <h2 class="pitch-project-title" id="display-title">IncidentPulse AI</h2>
+              <div class="pitch-project-tagline" id="display-tagline">Autonomous SRE Copilot for Root-Cause Triaging</div>
+            </div>
+            <span class="pitch-pill" id="display-track">Developer Tools & Infra</span>
+          </div>
+          <p id="display-summary" style="font-size: 1.05rem; color: #CBD5E1; margin-bottom: 1.5rem;"></p>
+        </div>
+
+        <div class="cards-2col">
+          <div class="glass-card info-block">
+            <h3>🚨 The Problem</h3>
+            <p id="display-problem"></p>
+          </div>
+          <div class="glass-card info-block">
+            <h3>✨ The Solution</h3>
+            <p id="display-solution"></p>
+          </div>
+        </div>
+
+        <div class="cards-3col">
+          <div class="glass-card info-block">
+            <h3>👥 Target Personas</h3>
+            <ul id="display-personas" style="padding-left: 1.25rem; color: var(--text-muted); font-size: 0.95rem;"></ul>
+          </div>
+          <div class="glass-card info-block">
+            <h3>🏰 Unfair Moat</h3>
+            <p id="display-moat"></p>
+          </div>
+          <div class="glass-card info-block">
+            <h3>📈 Key Metrics</h3>
+            <ul id="display-metrics" style="padding-left: 1.25rem; color: var(--text-muted); font-size: 0.95rem;"></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: Task-Model Fit Audit -->
+      <div class="tab-pane" id="pane-taskfit">
+        <div class="glass-card score-badge-card">
+          <div class="score-circle">
+            <span class="score-number" id="fit-score-num">92</span>
+          </div>
+          <div class="score-details">
+            <h3 id="fit-verdict-text">High Task-Model Fit</h3>
+            <p>Evaluated using @project-development framework: problem matches LLM synthesis & subjective classification strengths with deterministic guardrails.</p>
+          </div>
+        </div>
+
+        <div class="cards-2col">
+          <div class="glass-card info-block">
+            <h3>🔍 Synthesis & Subjective Reasoning</h3>
+            <p id="fit-synthesis-text"></p>
+            <p id="fit-reasoning-text" style="margin-top: 0.5rem;"></p>
+          </div>
+          <div class="glass-card info-block">
+            <h3>🛡️ Deterministic Boundaries & Latency</h3>
+            <p id="fit-boundary-text"></p>
+            <p id="fit-latency-text" style="margin-top: 0.5rem;"></p>
+          </div>
+        </div>
+
+        <div class="glass-card" style="padding: 1.5rem;">
+          <h3 style="font-family: var(--font-heading); font-size: 1.15rem; margin-bottom: 1rem;">
+            ⚙️ LLM vs Deterministic Code Responsibility Division
+          </h3>
+          <div class="data-table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Component</th>
+                  <th>Execution Handler</th>
+                  <th>Design Rationale</th>
+                </tr>
+              </thead>
+              <tbody id="division-table-body">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: System Architecture -->
+      <div class="tab-pane" id="pane-arch">
+        <div class="cards-2col">
+          <div class="glass-card info-block">
+            <h3>💻 Frontend Layer</h3>
+            <p><strong>Stack:</strong> <span id="arch-frontend-stack">Vanilla JS & CSS3 Glassmorphism</span></p>
+            <p><strong>State:</strong> <span id="arch-frontend-state">Reactive Event Emitter</span></p>
+            <p><strong>Visual Tokens:</strong> <span id="arch-frontend-tokens">Tailored Indigo/Cyan/Dark Mesh</span></p>
+          </div>
+          <div class="glass-card info-block">
+            <h3>⚡ Backend Layer</h3>
+            <p><strong>Runtime:</strong> <span id="arch-backend-runtime">Node.js (v24 LTS)</span></p>
+            <p><strong>Framework:</strong> <span id="arch-backend-framework">Express.js REST API</span></p>
+            <p><strong>Resilience:</strong> <span id="arch-backend-resilience">Schema validation & timeout circuits</span></p>
+          </div>
+        </div>
+
+        <div class="glass-card info-block" style="margin-bottom: 1.5rem;">
+          <h3>🤖 LLM Architecture Patterns (@llm-app-patterns)</h3>
+          <p><strong>Pattern:</strong> <span id="arch-llm-pattern">Agentic RAG + Self-Reflective Guardrail</span></p>
+          <p><strong>Retrieval:</strong> <span id="arch-llm-retrieval">Hybrid Vector + BM25 Lexical</span></p>
+          <p><strong>Chunking:</strong> <span id="arch-llm-chunking">500-token chunks with 75-token overlap</span></p>
+          <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.95rem; color: var(--emerald);">Active Safety Guardrails:</h4>
+          <ul id="arch-llm-guardrails" style="padding-left: 1.25rem; font-size: 0.9rem; color: var(--text-muted);"></ul>
+        </div>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span>DATABASE SCHEMA (SQL DDL)</span>
+            <span>PostgreSQL / SQLite Compatible</span>
+          </div>
+          <pre class="code-pre" id="arch-db-sql">-- Generating schema...</pre>
+        </div>
+      </div>
+
+      <!-- TAB 4: Interactive MVP Sandbox -->
+      <div class="tab-pane" id="pane-sandbox">
+        <div class="sandbox-card glass-card">
+          <div class="sandbox-header">
+            <h3 id="sandbox-headline">🧪 Live Product Simulation Playground</h3>
+            <button class="btn btn-accent btn-sm" id="btn-reset-sandbox">↺ Reset Sample Payload</button>
+          </div>
+          <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
+            Test the live reasoning capabilities of the generated project MVP. Edit the simulated input below and run the agent to see real-time multi-stage triage!
+          </p>
+
+          <label id="sandbox-input-label" style="display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.5rem; color: var(--cyan);">
+            Simulated Input Stream / Telemetry Payload:
+          </label>
+          <textarea id="sandbox-input" class="sandbox-textarea"></textarea>
+
+          <button class="btn btn-primary" id="btn-run-sandbox">
+            <span>⚡ Run Agent Simulation</span>
+          </button>
+
+          <!-- Real-Time Sandbox Execution Output -->
+          <div class="sim-results-box" id="sandbox-output-timeline">
+            <div class="sim-results-header">
+              <strong style="color: var(--emerald);">✓ Simulation Completed Successfully</strong>
+              <span id="sim-latency-badge" style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted);">Latency: 225ms</span>
+            </div>
+            <div id="sim-stages-container">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 5: Pitch Deck Mode -->
+      <div class="tab-pane" id="pane-slides">
+        <div class="slides-carousel-wrapper" id="slides-wrapper">
+          <div>
+            <div class="slide-counter" id="slide-indicator">SLIDE 1 OF 5</div>
+            <div class="slide-content-area" id="slide-content">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+          <div class="slides-controls">
+            <button class="btn btn-secondary btn-sm" id="btn-prev-slide">← Previous Slide</button>
+            <div class="slide-dots" id="slide-dots-container"></div>
+            <button class="btn btn-primary btn-sm" id="btn-next-slide">Next Slide →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 6: Export PRD -->
+      <div class="tab-pane" id="pane-export">
+        <div class="glass-card" style="padding: 2rem;">
+          <h3 style="font-family: var(--font-heading); font-size: 1.35rem; margin-bottom: 0.75rem;">
+            📄 Complete Hackathon Submission & PRD Kit
+          </h3>
+          <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+            Export the comprehensive blueprint including Problem/Solution, Task-Model Fit Audit, Fullstack Architecture, and Pitch Slides as clean GitHub-Flavored Markdown.
+          </p>
+          <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+            <button class="btn btn-primary" id="btn-download-md">
+              <span>📥 Download PRD.md</span>
+            </button>
+            <button class="btn btn-secondary" id="btn-copy-md">
+              <span>📋 Copy to Clipboard</span>
+            </button>
+          </div>
+          <div class="code-container">
+            <div class="code-header">
+              <span>MARKDOWN PREVIEW</span>
+              <span>Ready for README.md</span>
+            </div>
+            <pre class="code-pre" id="export-markdown-preview" style="max-height: 400px; overflow-y: auto;"></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Real-Time AI Refinement Drawer -->
+      <div class="glass-card refine-card" id="refine-box">
+        <div class="refine-header">
+          <span>⚡ Real-Time Blueprint Refinement</span>
+        </div>
+        <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+          Want to modify the blueprint? Click a quick modifier or type instructions below:
+        </p>
+        <div class="refine-chips">
+          <button class="refine-chip" data-inst="Convert backend to AWS Lambda / Edge Serverless">Make Architecture Serverless</button>
+          <button class="refine-chip" data-inst="Add HIPAA and GDPR privacy compliance filters">Add Privacy & HIPAA Filter</button>
+          <button class="refine-chip" data-inst="Add Redis semantic caching layer for responses">Add Redis Caching</button>
+        </div>
+        <div class="input-row">
+          <input type="text" id="refine-input" class="input-field" placeholder="e.g. 'Add multi-tenant authentication' or 'Target enterprise healthcare'...">
+          <button class="btn btn-secondary" id="btn-refine">Update Blueprint</button>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Settings Modal (Provider Configuration) -->
+  <div class="modal-overlay" id="settings-modal">
+    <div class="modal-content glass-card">
+      <div class="modal-header">
+        <h3>⚙️ Engine & API Settings</h3>
+        <button class="close-btn" id="btn-close-modal">&times;</button>
+      </div>
+      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+        IdeaSprint runs instantaneously with its built-in high-fidelity neural engine. You can also connect your own Gemini or OpenAI API key.
+      </p>
+
+      <div style="margin-bottom: 1rem;">
+        <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem;">AI Provider</label>
+        <select id="setting-provider" class="input-field" style="width: 100%;">
+          <option value="built-in">Built-in Neural AI Synthesizer (Instant & Free)</option>
+          <option value="gemini">Google Gemini 1.5 Flash (Custom API Key)</option>
+        </select>
+      </div>
+
+      <div style="margin-bottom: 1.5rem;" id="api-key-group">
+        <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem;">API Key (Optional)</label>
+        <input type="password" id="setting-api-key" class="input-field" style="width: 100%;" placeholder="Paste your API key here...">
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+        <button class="btn btn-secondary" id="btn-cancel-settings">Cancel</button>
+        <button class="btn btn-primary" id="btn-save-settings">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container"></div>
+
+  <!-- JavaScript Modules -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

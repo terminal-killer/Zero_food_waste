@@ -1,0 +1,17 @@
+{
+  "donor": {
+    "en": "🙏 *AnnaSetu Bhubaneswar Dispatch*\nHello {donor_name}, thank you for donating {total_meals} meals! Our volunteer *{volunteer_name}* ({volunteer_vehicle}) is en route to pickup from {donor_area}.\n⏱️ *Pickup ETA:* ~{pickup_eta} mins\n📞 *Volunteer Contact:* {volunteer_contact}\nRecipient: {recipient_names}\n*Zero Food Waste, Zero Hunger.*",
+    "hi": "🙏 *अन्नसेतु भुवनेश्वर सूचना*\nनमस्ते {donor_name}, {total_meals} भोजन पैकेट दान करने के लिए धन्यवाद! हमारे स्वयंसेवक *{volunteer_name}* ({volunteer_vehicle}) आपके स्थान ({donor_area}) पर आ रहे हैं।\n⏱️ *पिकअप समय:* लगभग {pickup_eta} मिनट\n📞 *संपर्क:* {volunteer_contact}\n*अन्न बचाएं, जीवन संवारें।*",
+    "or": "🙏 *ଅନ୍ନସେତୁ ଭୁବନେଶ୍ୱର ସୂଚନା*\nନମସ୍କାର {donor_name}, {total_meals} ଖାଦ୍ୟ ପ୍ୟାକେଟ ଦାନ ପାଇଁ ଧନ୍ୟବାଦ! ଆମର ସ୍ୱେଚ୍ଛାସେବୀ *{volunteer_name}* ({donor_area}) ଠାରୁ ଖାଦ୍ୟ ସଂଗ୍ରହ କରିବାକୁ ଆସୁଛନ୍ତି।\n⏱️ *ପହଞ୍ଚିବା ସମୟ:* ~{pickup_eta} ମିନିଟ୍\n📞 *ଫୋନ୍:* {volunteer_contact}\n*ଖାଦ୍ୟ ନଷ୍ଟ ନକରିବା, କ୍ଷୁଧା ମୁକ୍ତ କରିବା।*"
+  },
+  "recipient": {
+    "en": "🍲 *AnnaSetu Food Relief Alert*\nHello {recipient_name}, fresh surplus food is on the way!\n📦 *Items:* {items_summary} ({total_meals} meals)\n📍 *Source:* {donor_name}, {donor_area}\n🚚 *Volunteer:* {volunteer_name} ({volunteer_contact})\n⏱️ *Expected Drop:* ~{drop_eta} mins (Consume by {expires_at}).",
+    "hi": "🍲 *अन्नसेतु राहत सूचना*\nनमस्ते {recipient_name}, आपके लिए ताजा भोजन आ रहा है!\n📦 *विवरण:* {items_summary} ({total_meals} पैकेट)\n📍 *स्रोत:* {donor_name}, {donor_area}\n🚚 *स्वयंसेवक:* {volunteer_name} ({volunteer_contact})\n⏱️ *पहुंचने का समय:* ~{drop_eta} मिनट (कृपया {expires_at} से पहले वितरित करें)।",
+    "or": "🍲 *ଅନ୍ନସେତୁ ସହାୟତା ବାର୍ତ୍ତା*\nନମସ୍କାର {recipient_name}, ଆପଣଙ୍କ ନିକଟକୁ ସତେଜ ଖାଦ୍ୟ ଆସୁଅଛି!\n📦 *ବିବରଣୀ:* {items_summary} ({total_meals} ଟି ପ୍ୟାକେଟ)\n📍 *ଉତ୍ସ:* {donor_name}, {donor_area}\n🚚 *ସ୍ୱେଚ୍ଛାସେବୀ:* {volunteer_name} ({volunteer_contact})\n⏱️ *ପହଞ୍ଚିବା ସମୟ:* ~{drop_eta} ମିନିଟ୍ (ଦୟାକରି {expires_at} ପୂର୍ବରୁ ବଣ୍ଟନ କରନ୍ତୁ)।"
+  },
+  "volunteer": {
+    "en": "🚨 *AnnaSetu Volunteer Mission #{mission_id}*\nVolunteer: *{volunteer_name}*\n\n1️⃣ *PICKUP:* {donor_name}\n📍 Area: {donor_area}\n📞 Contact: {donor_contact}\n📦 Collect: {total_meals} meals ({items_summary})\n\n2️⃣ *DROPOFF:* {drop_instructions}\n\n⏱️ *Critical Limit:* Deliver within {minutes_remaining} mins\nSafety: Check thermal seals & aroma upon pickup.",
+    "hi": "🚨 *अन्नसेतु स्वयंसेवक मिशन #{mission_id}*\nस्वयंसेवक: *{volunteer_name}*\n\n1️⃣ *पिकअप:* {donor_name}\n📍 क्षेत्र: {donor_area}\n📞 संपर्क: {donor_contact}\n📦 सामग्री: {total_meals} पैकेट ({items_summary})\n\n2️⃣ *वितरण स्थल:* {drop_instructions}\n\n⏱️ *समय सीमा:* {minutes_remaining} मिनट के भीतर पूरा करें।",
+    "or": "🚨 *ଅନ୍ନସେତୁ ସ୍ୱେଚ୍ଛାସେବୀ ଦାୟିତ୍ୱ #{mission_id}*\nସ୍ୱେଚ୍ଛାସେବୀ: *{volunteer_name}*\n\n1️⃣ *ଖାଦ୍ୟ ସଂଗ୍ରହ:* {donor_name}\n📍 ସ୍ଥାନ: {donor_area}\n📞 ଫୋନ୍: {donor_contact}\n📦 ପରିମାଣ: {total_meals} ଟି ଖାଦ୍ୟ ପ୍ୟାକେଟ ({items_summary})\n\n2️⃣ *ବଣ୍ଟନ କେନ୍ଦ୍ର:* {drop_instructions}\n\n⏱️ *ସମୟ ସୀମା:* {minutes_remaining} ମିନିଟ୍ ମଧ୍ୟରେ ପହଞ୍ଚାନ୍ତୁ।"
+  }
+}

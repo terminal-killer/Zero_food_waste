@@ -1,0 +1,1250 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1A73E8">
+  <title>AnnaSetu — Hyperlocal Surplus Food Redistribution Engine</title>
+  <meta name="description" content="Autonomous surplus meal rescue & hyperlocal redistribution engine for Bhubaneswar, India. Real-time food safety audits, recipient matching, and volunteer routing.">
+
+  <!-- Google Fonts: Inter + Google Sans (Nunito Sans as fallback) + JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+  <style>
+    /* ============================================================
+       AnnaSetu Dashboard — Google Material Design 3 Light Mode
+       Google Cloud Console + Maps Crisis Response aesthetic
+       ============================================================ */
+    :root {
+      /* MD3 Tonal Surface */
+      --bg:              #F8FAFD;
+      --surface:         #FFFFFF;
+      --surface-variant: #F1F3F4;
+      --on-surface:      #202124;
+      --on-surface-var:  #5F6368;
+
+      /* Border & Elevation */
+      --border:          #E0E3E7;
+      --card-shadow:     0 1px 2px 0 rgba(60,64,67,0.08), 0 1px 3px 1px rgba(60,64,67,0.04);
+      --card-shadow-md:  0 2px 6px 2px rgba(60,64,67,0.10), 0 1px 2px 0 rgba(60,64,67,0.08);
+      --card-shadow-lg:  0 4px 12px 3px rgba(60,64,67,0.12), 0 2px 4px rgba(60,64,67,0.08);
+
+      /* Google Brand Primary (Blue) */
+      --primary:         #1A73E8;
+      --primary-light:   #E8F0FE;
+      --primary-hover:   #1557B0;
+      --on-primary:      #FFFFFF;
+
+      /* Semantic States */
+      --success:         #137333;
+      --success-bg:      #E6F4EA;
+      --success-border:  #34A853;
+      --warning:         #B06000;
+      --warning-bg:      #FEF7E0;
+      --warning-border:  #F9AB00;
+      --danger:          #C5221F;
+      --danger-bg:       #FCE8E6;
+      --danger-border:   #EA4335;
+      --info:            #01579B;
+      --info-bg:         #E3F2FD;
+
+      /* Typography */
+      --font-main:       'Inter', 'Google Sans', system-ui, -apple-system, sans-serif;
+      --font-display:    'Nunito Sans', 'Google Sans', 'Inter', sans-serif;
+      --font-mono:       'JetBrains Mono', 'Roboto Mono', monospace;
+
+      /* Accent colours (map markers, tabs) */
+      --google-red:      #EA4335;
+      --google-yellow:   #FBBC04;
+      --google-green:    #34A853;
+      --google-blue:     #4285F4;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--on-surface);
+      font-family: var(--font-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* â”€â”€ HEADER (Google Cloud Console style) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 1.5rem;
+      height: 56px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 1px 3px rgba(60,64,67,0.12);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--primary);
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      font-size: 1.15rem;
+      flex-shrink: 0;
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--on-surface);
+      letter-spacing: -0.2px;
+    }
+
+    .brand-subtitle {
+      font-size: 0.68rem;
+      color: var(--on-surface-var);
+    }
+
+    .city-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.3rem 0.85rem;
+      background: var(--success-bg);
+      border: 1px solid var(--success-border);
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    .city-pulse {
+      width: 7px;
+      height: 7px;
+      background: var(--google-green);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(1.35); }
+    }
+
+    /* â”€â”€ CONTROLS TOOLBAR (Google Cloud Console sub-header) â”€â”€â”€â”€â”€ */
+    .controls-container {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0.65rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .controls-row {
+      display: flex;
+      gap: 0.55rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .select-samples {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--on-surface);
+      padding: 0.5rem 0.75rem;
+      border-radius: 4px;
+      font-size: 0.82rem;
+      font-family: inherit;
+      outline: none;
+      min-width: 250px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .select-samples:hover { border-color: var(--primary); }
+    .select-samples:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(26,115,232,0.2); }
+
+    .dispatch-input {
+      flex: 1;
+      min-width: 280px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--on-surface);
+      padding: 0.5rem 0.85rem;
+      border-radius: 4px;
+      font-size: 0.88rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .dispatch-input::placeholder { color: var(--on-surface-var); }
+    .dispatch-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(26,115,232,0.18);
+    }
+
+    .time-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: var(--surface-variant);
+      border: 1px solid var(--border);
+      padding: 0.38rem 0.65rem;
+      border-radius: 4px;
+      font-size: 0.77rem;
+      color: var(--on-surface-var);
+    }
+
+    .time-input {
+      background: transparent;
+      border: none;
+      color: var(--primary);
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* Google-style filled button */
+    .btn-run {
+      background: var(--primary);
+      color: var(--on-primary);
+      border: none;
+      padding: 0.5rem 1.25rem;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      box-shadow: 0 1px 3px rgba(60,64,67,0.2);
+      transition: background 0.15s, box-shadow 0.15s;
+      white-space: nowrap;
+      letter-spacing: 0.01em;
+    }
+    .btn-run:hover:not(:disabled) {
+      background: var(--primary-hover);
+      box-shadow: 0 2px 6px rgba(60,64,67,0.3);
+    }
+    .btn-run:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    /* â”€â”€ "WHAT I UNDERSTOOD" EDITABLE BAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    .understood-bar {
+      display: none;
+      background: var(--info-bg);
+      border: 1px solid rgba(26,115,232,0.3);
+      border-radius: 4px;
+      padding: 0.5rem 0.85rem;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .understood-label {
+      font-size: 0.77rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      white-space: nowrap;
+    }
+
+    .edit-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 0.22rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.74rem;
+    }
+
+    .edit-pill span { color: var(--on-surface-var); }
+
+    .edit-pill input {
+      background: transparent;
+      border: none;
+      color: var(--on-surface);
+      font-size: 0.77rem;
+      font-weight: 600;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .btn-rerun-edits {
+      background: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      padding: 0.3rem 0.8rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      margin-left: auto;
+      transition: background 0.12s;
+    }
+    .btn-rerun-edits:hover { background: var(--primary-light); }
+
+    /* â”€â”€ CLARIFY BANNER (NEEDS_INFO) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    .clarify-banner {
+      display: none;
+      background: var(--warning-bg);
+      border: 1px solid var(--warning-border);
+      border-radius: 8px;
+      padding: 0.85rem 1.25rem;
+      margin: 0.65rem 1.5rem;
+      box-shadow: var(--card-shadow);
+      animation: fadeIn 0.25s ease;
+    }
+
+    .clarify-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      color: var(--warning);
+      font-size: 0.88rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .clarify-question {
+      font-size: 0.86rem;
+      color: var(--on-surface);
+      margin-bottom: 0.6rem;
+    }
+
+    .clarify-input-row { display: flex; gap: 0.5rem; }
+
+    .clarify-input {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--warning-border);
+      color: var(--on-surface);
+      padding: 0.45rem 0.8rem;
+      border-radius: 4px;
+      font-size: 0.84rem;
+      font-family: inherit;
+      outline: none;
+    }
+    .clarify-input:focus { box-shadow: 0 0 0 2px rgba(249,171,0,0.25); }
+
+    .btn-clarify-submit {
+      background: #F9AB00;
+      color: #202124;
+      font-weight: 700;
+      font-family: inherit;
+      border: none;
+      padding: 0.45rem 1.1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      transition: background 0.12s;
+    }
+    .btn-clarify-submit:hover { background: #E8980A; }
+
+    /* â”€â”€ 6-STAGE PIPELINE STRIP â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    .stages-bar {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.55rem;
+      padding: 0.65rem 1.5rem;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+
+    @media (max-width: 1024px) { .stages-bar { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 640px)  { .stages-bar { grid-template-columns: 1fr; } }
+
+    .stage-card {
+      background: var(--surface-variant);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.5rem 0.65rem;
+      transition: all 0.2s ease;
+      opacity: 0.45;
+      transform: translateY(3px);
+    }
+
+    .stage-card.active {
+      opacity: 1;
+      transform: translateY(0);
+      border-color: rgba(26,115,232,0.45);
+      background: var(--surface);
+      box-shadow: var(--card-shadow);
+    }
+
+    .stage-card.safe   { border-color: var(--success-border); background: var(--success-bg); }
+    .stage-card.warn   { border-color: var(--warning-border); background: var(--warning-bg); }
+    .stage-card.reject { border-color: var(--danger-border);  background: var(--danger-bg); }
+
+    .stage-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.22rem;
+    }
+
+    .stage-name {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--on-surface);
+    }
+
+    .stage-latency {
+      font-size: 0.65rem;
+      font-family: var(--font-mono);
+      color: var(--primary);
+    }
+
+    .stage-badge {
+      display: inline-block;
+      font-size: 0.62rem;
+      font-weight: 700;
+      padding: 0.12rem 0.4rem;
+      border-radius: 3px;
+      background: var(--border);
+      color: var(--on-surface-var);
+      letter-spacing: 0.2px;
+    }
+
+    .stage-badge.b-safe   { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-border); }
+    .stage-badge.b-warn   { background: var(--warning-bg); color: var(--warning); border: 1px solid var(--warning-border); }
+    .stage-badge.b-reject { background: var(--danger-bg);  color: var(--danger);  border: 1px solid var(--danger-border); }
+
+    /* â”€â”€ DASHBOARD MAIN GRID â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 300px 1fr 330px;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      flex: 1;
+      align-items: start;
+    }
+
+    @media (max-width: 1200px) { .dashboard-grid { grid-template-columns: 1fr; } }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      box-shadow: var(--card-shadow);
+    }
+
+    .panel-title {
+      font-size: 0.83rem;
+      font-weight: 700;
+      color: var(--on-surface);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* â”€â”€ IMPACT METRICS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    .impact-metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+
+    .metric-card {
+      background: var(--surface-variant);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.6rem 0.65rem;
+      text-align: center;
+    }
+
+    .metric-val {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary);
+      font-family: var(--font-mono);
+    }
+
+    .metric-label {
+      font-size: 0.65rem;
+      color: var(--on-surface-var);
+      margin-top: 0.1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* â”€â”€ RUNS FEED â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    .listing-feed {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      max-height: 360px;
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+
+    .listing-feed::-webkit-scrollbar { width: 4px; }
+    .listing-feed::-webkit-scrollbar-track { background: transparent; }
+    .listing-feed::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    .feed-card {
+      background: var(--surface-variant);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.55rem 0.7rem;
+      cursor: pointer;
+      transition: background 0.12s, border-color 0.12s;
+    }
+
+    .feed-card:hover {
+      background: var(--primary-light);
+      border-color: rgba(26,115,232,0.3);
+    }
+
+    .feed-card.active {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .feed-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.18rem;
+    }
+
+    .feed-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--on-surface);
+    }
+
+    .feed-meta {
+      font-size: 0.68rem;
+      color: var(--on-surface-var);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* â”€â”€ STATUS CHIPS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    .chip {
+      font-size: 0.6rem;
+      font-weight: 700;
+      padding: 0.12rem 0.38rem;
+      border-radius: 3px;
+      text-transform: uppercase;
+      border: 1px solid;
+    }
+
+    .chip-safe   { background: var(--success-bg); color: var(--success); border-color: var(--success-border); }
+    .chip-warn   { background: var(--warning-bg); color: var(--warning); border-color: var(--warning-border); }
+    .chip-reject { background: var(--danger-bg);  color: var(--danger);  border-color: var(--danger-border); }
+    .chip-split  { background: var(--info-bg);    color: var(--info);    border-color: rgba(26,115,232,0.4); }
+
+    /* â”€â”€ MAP â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    #map {
+      width: 100%;
+      height: 360px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      z-index: 10;
+    }
+
+    #mission-itinerary {
+      background: var(--surface-variant);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.6rem 0.75rem;
+      font-size: 0.77rem;
+      line-height: 1.5;
+      color: var(--on-surface-var);
+    }
+
+    /* â”€â”€ MESSAGE TABS & BOX â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    .tab-row {
+      display: flex;
+      gap: 0.25rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0;
+    }
+
+    .tab-mini {
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--on-surface-var);
+      padding: 0.3rem 0.65rem;
+      font-size: 0.72rem;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      transition: color 0.12s, border-color 0.12s;
+      margin-bottom: -1px;
+    }
+
+    .tab-mini.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    .tab-mini:hover:not(.active) { color: var(--on-surface); }
+
+    .msg-box {
+      background: var(--surface-variant);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.7rem 0.8rem;
+      font-family: var(--font-mono);
+      font-size: 0.73rem;
+      line-height: 1.55;
+      color: var(--on-surface);
+      white-space: pre-wrap;
+      word-break: break-word;
+      min-height: 150px;
+      max-height: 220px;
+      overflow-y: auto;
+    }
+
+    .btn-copy {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--primary);
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+    .btn-copy:hover { background: var(--primary-light); }
+
+    /* â”€â”€ TOAST â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    .toast {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: #202124;
+      border: 1px solid #444;
+      color: #FFFFFF;
+      padding: 0.6rem 1.1rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-family: inherit;
+      z-index: 2000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+      animation: slideIn 0.2s ease;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(12px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* â”€â”€ SAFETY VERDICT BOX â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    #safety-verdict-box {
+      border-radius: 6px;
+      padding: 0.75rem 0.85rem;
+      background: var(--surface-variant);
+      border: 1px solid var(--border);
+      font-size: 0.82rem;
+      color: var(--on-surface-var);
+    }
+
+    /* Scrollbar global */
+    ::-webkit-scrollbar       { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #C4C7C5; border-radius: 4px; }
+  </style>
+
+</head>
+<body>
+
+  <!-- Google-Style Sticky Top Navigation -->
+  <header>
+    <div class="brand">
+      <div class="brand-icon">🌾</div>
+      <div>
+        <div class="brand-title">AnnaSetu (Zero Food Waste)</div>
+        <div class="brand-subtitle">Autonomous Surplus Meal Rescue &amp; Hyperlocal Redistribution Engine</div>
+      </div>
+    </div>
+    <div class="city-badge">
+      <span class="city-pulse"></span>
+      <span>Bhubaneswar Network Active</span>
+    </div>
+  </header>
+
+  <!-- Google-Style Action Bar / Controls -->
+  <div class="controls-container">
+    <div class="controls-row">
+      <select id="demo-samples-select" class="select-samples">
+        <option value="" disabled selected>📂 Load Demo Sample (fills text bar)...</option>
+        <option value="Wedding banquet at Royal Garden, Patia. 40 veg biryani packets and 20 sweets, cooked at 6:30 PM, expires at 10:30 PM, contact: 9861122334">1. Patia Wedding Hall (40 biryani + 20 sweets, cooked 6:30 PM)</option>
+        <option value="Corporate Tech Fest cafeteria in Fortune Towers, Saheed Nagar, 130 meals cooked at 18:00, expires at 22:30, phone 9861011223">2. Saheed Nagar Tech Fest (130 meals - Batch Split)</option>
+        <option value="Lingaraj Seva Samiti at Old Town, 50 consecrated Mahaprasad plates, hot thermal storage, cooked 1:30 PM, expires 7:30 PM, phone 9438012345">3. Old Town Temple Prasad (50 insulated meals, cooked 13:30)</option>
+        <option value="Khandagiri Mandap reception, open buffet leftover trays touched by guests, 25 meals cooked 17:00">4. Khandagiri Buffet (Half-eaten plate food - Sanitary Reject)</option>
+        <option value="Bakery in Nayapalli, fresh patties baked at 5:00 PM, expires at 11:00 PM, contact: 9937123456">5. Nayapalli Bakery (Missing quantity - Triggers Clarifying Question)</option>
+        <option value="Late banquet in Patia, 35 meal packets cooked 8:30 PM, expires 11:59 PM">6. Late Night Surplus (Night shelter match)</option>
+      </select>
+      <input type="text" id="live-listing-input" class="dispatch-input"
+        placeholder="Type or paste any surplus text..."
+        value="Wedding banquet at Royal Garden, Patia. 40 veg biryani packets and 20 sweets, cooked at 6:30 PM, expires at 10:30 PM, contact: 9861122334">
+      <div class="time-input-wrap">
+        <span>⏱️ Simulated:</span>
+        <input type="time" id="simulated-time-input" class="time-input" title="Optional Simulated Clock">
+      </div>
+      <button class="btn-run" id="btn-run-live"><span>⚡ Run Mission</span></button>
+    </div>
+    <div class="understood-bar" id="understood-bar">
+      <div class="understood-label">🧠 What I Understood:</div>
+      <div class="edit-pill"><span>Qty:</span><input type="number" id="edit-qty" style="width:50px"></div>
+      <div class="edit-pill"><span>Items:</span><input type="text" id="edit-items" style="width:140px"></div>
+      <div class="edit-pill"><span>Area:</span><input type="text" id="edit-area" style="width:110px"></div>
+      <div class="edit-pill"><span>Cooked:</span><input type="text" id="edit-cooked" style="width:140px"></div>
+      <button class="btn-rerun-edits" id="btn-rerun-edits">🔄 Re-run with Edits</button>
+    </div>
+  </div>
+
+  <!-- Clarification Banner (for NEEDS_INFO) -->
+  <div class="clarify-banner" id="clarify-banner">
+    <div class="clarify-header">
+      <span>⚠️ CLARIFICATION REQUIRED FROM DONOR</span>
+      <span id="clarify-run-id" style="font-size:0.7rem;font-family:var(--font-mono);color:var(--on-surface-var);margin-left:auto;"></span>
+    </div>
+    <div class="clarify-question" id="clarify-question-text">Could you please specify the quantity of food packets?</div>
+    <div class="clarify-input-row">
+      <input type="text" id="clarify-answer-input" class="clarify-input" placeholder="Type your answer...">
+      <button class="btn-clarify-submit" id="btn-clarify-submit">Submit Answer &amp; Resume</button>
+    </div>
+  </div>
+
+  <!-- 6-Stage Pipeline Latency Bar -->
+  <div class="stages-bar" id="stages-bar">
+    <div class="stage-card" id="card-stage-intake"><div class="stage-top"><span class="stage-name">1. Surplus Intake</span><span class="stage-latency" id="lat-intake">-- ms</span></div><span class="stage-badge" id="badge-intake">IDLE</span></div>
+    <div class="stage-card" id="card-stage-safety"><div class="stage-top"><span class="stage-name">2. Safety Gate</span><span class="stage-latency" id="lat-safety">-- ms</span></div><span class="stage-badge" id="badge-safety">IDLE</span></div>
+    <div class="stage-card" id="card-stage-match"><div class="stage-top"><span class="stage-name">3. Recipient Match</span><span class="stage-latency" id="lat-match">-- ms</span></div><span class="stage-badge" id="badge-match">IDLE</span></div>
+    <div class="stage-card" id="card-stage-pickup"><div class="stage-top"><span class="stage-name">4. Volunteer Route</span><span class="stage-latency" id="lat-pickup">-- ms</span></div><span class="stage-badge" id="badge-pickup">IDLE</span></div>
+    <div class="stage-card" id="card-stage-notify"><div class="stage-top"><span class="stage-name">5. Alerts Dispatch</span><span class="stage-latency" id="lat-notify">-- ms</span></div><span class="stage-badge" id="badge-notify">IDLE</span></div>
+    <div class="stage-card" id="card-stage-impact"><div class="stage-top"><span class="stage-name">6. Impact Audit</span><span class="stage-latency" id="lat-impact">-- ms</span></div><span class="stage-badge" id="badge-impact">IDLE</span></div>
+  </div>
+
+  <!-- Main 3-Column Layout -->
+  <main class="dashboard-grid">
+    <!-- Panel 1: Impact & Missions Feed -->
+    <section class="panel">
+      <div class="panel-title"><span>🌱 Live Verified Impact</span><span style="font-size:0.7rem;color:var(--success);">Immutable Ledger</span></div>
+      <div class="impact-metrics">
+        <div class="metric-card"><div class="metric-val" id="metric-meals">--</div><div class="metric-label">Meals Rescued</div></div>
+        <div class="metric-card"><div class="metric-val" id="metric-kg">-- kg</div><div class="metric-label">Food Diverted</div></div>
+        <div class="metric-card"><div class="metric-val" id="metric-co2e">-- kg</div><div class="metric-label">CO2e Avoided</div></div>
+        <div class="metric-card"><div class="metric-val" id="metric-inr">₹--</div><div class="metric-label">Value Preserved</div></div>
+      </div>
+      <div class="panel-title" style="margin-top:0.25rem;"><span>📋 Recent Real Missions</span><span style="font-size:0.68rem;color:var(--on-surface-var);" id="runs-count-label">0 logged</span></div>
+      <div class="listing-feed" id="listing-feed-container"></div>
+    </section>
+
+    <!-- Panel 2: Hyperlocal Map & Routing -->
+    <section class="panel">
+      <div class="panel-title"><span>🗺️ Hyperlocal Route &amp; Safe Radius</span><span id="route-summary-tag" style="font-size:0.78rem;font-family:var(--font-mono);color:var(--primary);">Ready</span></div>
+      <div id="map"></div>
+      <div id="mission-itinerary"><strong>Route Status:</strong> Awaiting live mission dispatch.</div>
+    </section>
+
+    <!-- Panel 3: Microbial Safety & Multilingual Alerts -->
+    <section class="panel">
+      <div class="panel-title"><span>🛡️ Safety Gate &amp; Match Details</span></div>
+      <div id="safety-verdict-box"><div style="font-size:0.82rem;color:var(--on-surface-var);">Run a mission to evaluate microbial food safety.</div></div>
+      <div class="panel-title" style="margin-top:0.25rem;"><span>📲 Ready WhatsApp Alerts</span><button class="btn-copy" id="btn-copy-active">📋 Copy</button></div>
+      <div class="tab-row">
+        <button class="tab-mini active" data-msg="donor">Donor (EN)</button>
+        <button class="tab-mini" data-msg="volunteer">Volunteer (EN)</button>
+        <button class="tab-mini" data-msg="recipient-or">Recipient (Odia)</button>
+        <button class="tab-mini" data-msg="donor-hi">Donor (Hindi)</button>
+      </div>
+      <div class="msg-box" id="active-msg-preview">Awaiting mission dispatch to generate verified messages.</div>
+    </section>
+  </main>
+
+  <div id="toast-slot"></div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Complete Application Logic -->
+  <script>
+    let map = null, mapLayers = [], currentRunData = null, activeMsgType = 'donor', currentRunId = null;
+
+    function initMap() {
+      map = L.map('map', { zoomControl: true }).setView([20.2961, 85.8245], 12);
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap &copy; CARTO',
+        maxZoom: 19
+      }).addTo(map);
+    }
+
+    function clearMap() {
+      mapLayers.forEach(l => map.removeLayer(l));
+      mapLayers = [];
+    }
+
+    async function loadLiveStats() {
+      try {
+        const res = await fetch('/api/annasetu/stats');
+        const data = await res.json();
+        if (data.success && data.stats) {
+          const s = data.stats;
+          document.getElementById('metric-meals').innerText = (s.total_meals_saved || 0).toLocaleString();
+          document.getElementById('metric-kg').innerText = (s.total_kg_diverted || 0).toFixed(1) + " kg";
+          document.getElementById('metric-co2e').innerText = (s.total_co2e_avoided_kg || 0).toFixed(1) + " kg";
+          document.getElementById('metric-inr').innerText = "₹" + (s.total_economic_value_inr || 0).toLocaleString();
+        }
+      } catch (e) {
+        console.error("Stats error:", e);
+      }
+    }
+
+    async function loadRecentRuns() {
+      try {
+        const res = await fetch('/api/annasetu/runs');
+        const data = await res.json();
+        if (data.success && Array.isArray(data.runs)) {
+          const container = document.getElementById('listing-feed-container');
+          container.innerHTML = '';
+          document.getElementById('runs-count-label').innerText = `${data.runs.length} logged`;
+          data.runs.forEach(r => {
+            const card = document.createElement('div');
+            card.className = `feed-card ${currentRunData && currentRunData.run_id === r.run_id ? 'active' : ''}`;
+            const donor = (r.intake && r.intake.donor_name) || "Surplus Donor";
+            const area = (r.intake && r.intake.area) || "Bhubaneswar";
+            const meals = (r.intake && r.intake.total_quantity) || 0;
+            const status = r.status || "VALID";
+            let chipClass = "chip-safe";
+            if (status === "REJECT") chipClass = "chip-reject";
+            else if (status === "SAFE_IF_FAST" || status === "NEEDS_INFO") chipClass = "chip-warn";
+            else if (r.match && r.match.split_plan && r.match.split_plan.required) chipClass = "chip-split";
+
+            card.innerHTML = `
+              <div class="feed-header">
+                <span class="feed-title">${donor}</span>
+                <span class="chip ${chipClass}">${status}</span>
+              </div>
+              <div class="feed-meta">
+                <span>${meals} meals • ${area}</span>
+                <span style="font-family:var(--font-mono);">${(r.timestamp || "").slice(11, 16)}</span>
+              </div>
+            `;
+            card.addEventListener('click', () => renderRunResult(r));
+            container.appendChild(card);
+          });
+        }
+      } catch (e) {
+        console.error("Runs error:", e);
+      }
+    }
+
+    function animateStages(stages) {
+      const stageMap = {
+        intake: { card: 'card-stage-intake', lat: 'lat-intake', badge: 'badge-intake' },
+        safety: { card: 'card-stage-safety', lat: 'lat-safety', badge: 'badge-safety' },
+        match:  { card: 'card-stage-match',  lat: 'lat-match',  badge: 'badge-match' },
+        pickup: { card: 'card-stage-pickup', lat: 'lat-pickup', badge: 'badge-pickup' },
+        notify: { card: 'card-stage-notify', lat: 'lat-notify', badge: 'badge-notify' },
+        impact: { card: 'card-stage-impact', lat: 'lat-impact', badge: 'badge-impact' }
+      };
+
+      Object.values(stageMap).forEach(s => {
+        document.getElementById(s.card).className = 'stage-card';
+        document.getElementById(s.badge).innerText = 'IDLE';
+        document.getElementById(s.badge).className = 'stage-badge';
+        document.getElementById(s.lat).innerText = '-- ms';
+      });
+
+      if (!stages || !Array.isArray(stages)) return;
+
+      stages.forEach((st, idx) => {
+        setTimeout(() => {
+          const m = stageMap[st.id];
+          if (!m) return;
+          const cardEl = document.getElementById(m.card);
+          const badgeEl = document.getElementById(m.badge);
+          const latEl = document.getElementById(m.lat);
+
+          cardEl.classList.add('active');
+          latEl.innerText = `${st.duration_ms} ms`;
+          badgeEl.innerText = st.status;
+
+          if (['SAFE', 'VALID', 'CONFIRMED', 'MATCHED', 'GENERATED', 'CALCULATED'].includes(st.status)) {
+            cardEl.classList.add('safe');
+            badgeEl.className = 'stage-badge b-safe';
+          } else if (['SAFE_IF_FAST', 'NEEDS_INFO'].includes(st.status)) {
+            cardEl.classList.add('warn');
+            badgeEl.className = 'stage-badge b-warn';
+          } else if (st.status === 'REJECT') {
+            cardEl.classList.add('reject');
+            badgeEl.className = 'stage-badge b-reject';
+          }
+        }, idx * 100);
+      });
+    }
+
+    function renderRunResult(run) {
+      currentRunData = run;
+      currentRunId = run.run_id;
+      clearMap();
+      animateStages(run.stages);
+
+      const intake = run.intake || {};
+      const safety = run.safety || {};
+      const pickup = run.pickup || {};
+      const match = run.match || {};
+
+      // "What I Understood" Bar
+      const ub = document.getElementById('understood-bar');
+      if (intake && intake.area) {
+        ub.style.display = 'flex';
+        document.getElementById('edit-qty').value = intake.total_quantity || 0;
+        document.getElementById('edit-items').value = (intake.items && intake.items.map(i => i.name).join(", ")) || "Meal Packets";
+        document.getElementById('edit-area').value = intake.area || "";
+        document.getElementById('edit-cooked').value = (intake.cooked_at || "").slice(11, 16);
+      } else {
+        ub.style.display = 'none';
+      }
+
+      // Clarification Banner
+      const cb = document.getElementById('clarify-banner');
+      if (run.status === "NEEDS_INFO") {
+        cb.style.display = 'block';
+        document.getElementById('clarify-question-text').innerText = run.question || (intake && intake.question) || "Please clarify the listing details.";
+        document.getElementById('clarify-run-id').innerText = `Run ID: ${run.run_id}`;
+        document.getElementById('clarify-answer-input').value = "";
+        document.getElementById('clarify-answer-input').focus();
+      } else {
+        cb.style.display = 'none';
+      }
+
+      renderSafetyVerdict(safety, match);
+      renderMessages(run.notify);
+      renderRouteMap(intake, pickup);
+    }
+
+    function renderSafetyVerdict(safety, match) {
+      const box = document.getElementById('safety-verdict-box');
+      if (!safety || !safety.verdict) {
+        box.innerHTML = '<div style="font-size:0.82rem;color:var(--on-surface-var);">Run a mission to evaluate microbial food safety.</div>';
+        return;
+      }
+
+      const v = safety.verdict;
+      let badgeClass = 'chip-safe';
+      if (v === 'REJECT') badgeClass = 'chip-reject';
+      else if (v === 'SAFE_IF_FAST') badgeClass = 'chip-warn';
+
+      const mins = safety.minutes_remaining !== undefined ? Math.round(safety.minutes_remaining) : '--';
+      const cutoff = (safety.effective_cutoff || '').slice(11, 16) || '--:--';
+
+      let reasonsHtml = '';
+      if (safety.reasons && safety.reasons.length) {
+        reasonsHtml = '<ul style="margin:0.35rem 0 0 1rem;padding:0;font-size:0.75rem;color:var(--on-surface);">' +
+          safety.reasons.map(r => `<li style="margin-bottom:2px;">${r}</li>`).join('') + '</ul>';
+      }
+
+      let matchHtml = '';
+      if (match) {
+        if (match.split_plan && match.split_plan.required) {
+          matchHtml = `
+            <div style="margin-top:0.4rem;padding:0.4rem;background:#F1F3F4;border-radius:4px;font-size:0.75rem;">
+              <strong style="color:var(--warning);">⚡ Batch Split Plan Activated:</strong><br>
+              Primary: ${match.split_plan.primary_match.name} (${match.split_plan.primary_qty} meals)<br>
+              Secondary: ${match.split_plan.secondary_match.name} (${match.split_plan.secondary_qty} meals)
+            </div>
+          `;
+        } else if (match.top_matches && match.top_matches.length) {
+          const top = match.top_matches[0];
+          matchHtml = `
+            <div style="margin-top:0.4rem;padding:0.4rem;background:#F1F3F4;border-radius:4px;font-size:0.75rem;">
+              <strong>🎯 Top Recipient Match:</strong> ${top.name} (${top.area})<br>
+              Distance: ${top.distance_km} km • ETA: ~⏱️ ${Math.round(top.eta_minutes)} min • Match Score: ${top.match_score}%
+            </div>
+          `;
+        }
+      }
+
+      box.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.35rem;">
+          <span class="chip ${badgeClass}" style="font-size:0.78rem;font-weight:700;">${v}</span>
+          <span style="font-size:0.75rem;font-family:var(--font-mono);color:var(--on-surface-var);">Window: ${mins} mins (Cutoff: ${cutoff})</span>
+        </div>
+        ${reasonsHtml}
+        ${matchHtml}
+        <div style="font-size:0.68rem;color:var(--on-surface-var);margin-top:0.35rem;font-style:italic;">
+          ${safety.disclaimer || "Visual & olfactory sensory inspection must be confirmed at handover."}
+        </div>
+      `;
+    }
+
+    function renderMessages(notify) {
+      if (!notify || !notify.messages) {
+        document.getElementById('active-msg-preview').innerText = 'Awaiting mission dispatch to generate verified messages.';
+        return;
+      }
+
+      let text = '';
+      const m = notify.messages;
+      if (activeMsgType === 'donor') text = (m.donor && m.donor.en) || '';
+      else if (activeMsgType === 'volunteer') text = (m.volunteer && m.volunteer.en) || '';
+      else if (activeMsgType === 'recipient-or') text = (m.recipient && (m.recipient.or || m.recipient.en)) || '';
+      else if (activeMsgType === 'donor-hi') text = (m.donor && (m.donor.hi || m.donor.en)) || '';
+
+      document.getElementById('active-msg-preview').innerText = text || 'No message available for this view.';
+    }
+
+    function renderRouteMap(intake, pickup) {
+      clearMap();
+      const points = [];
+
+      // Donor pin
+      if (intake && intake.lat && intake.lng) {
+        const donorMarker = L.circleMarker([intake.lat, intake.lng], {
+          radius: 8,
+          fillColor: '#1A73E8',
+          color: '#FFFFFF',
+          weight: 2,
+          opacity: 1,
+          fillOpacity: 0.95
+        }).addTo(map).bindPopup(`<b>📍 Donor:</b> ${intake.donor_name || 'Donor'}<br>${intake.area || ''}`);
+        mapLayers.push(donorMarker);
+        points.push([intake.lat, intake.lng]);
+
+        // Catchment safe radius circle (5 km)
+        const radiusCircle = L.circle([intake.lat, intake.lng], {
+          radius: 5000,
+          color: '#1A73E8',
+          weight: 1,
+          dashArray: '4, 4',
+          fillColor: '#1A73E8',
+          fillOpacity: 0.05
+        }).addTo(map);
+        mapLayers.push(radiusCircle);
+      }
+
+      // Volunteer / Destinations
+      let itineraryHtml = '';
+      if (pickup && pickup.route_steps && pickup.route_steps.length) {
+        pickup.route_steps.forEach(st => {
+          if (st.lat && st.lng) {
+            const isPickup = st.type === 'PICKUP';
+            const m = L.circleMarker([st.lat, st.lng], {
+              radius: isPickup ? 9 : 7,
+              fillColor: isPickup ? '#F9AB00' : '#137333',
+              color: '#FFFFFF',
+              weight: 2,
+              fillOpacity: 0.95
+            }).addTo(map).bindPopup(`<b>${st.type}:</b> ${st.location_name}<br>${st.action}`);
+            mapLayers.push(m);
+            points.push([st.lat, st.lng]);
+          }
+        });
+
+        // Polyline connecting route
+        if (points.length >= 2) {
+          const polyline = L.polyline(points, { color: '#1A73E8', weight: 3, opacity: 0.8, dashArray: '6, 6' }).addTo(map);
+          mapLayers.push(polyline);
+          map.fitBounds(polyline.getBounds().pad(0.2));
+        } else if (points.length === 1) {
+          map.setView(points[0], 13);
+        }
+
+        const vol = pickup.assigned_volunteer || {};
+        itineraryHtml = `
+          <div style="font-size:0.78rem;">
+            <strong>Volunteer:</strong> ${vol.name || 'Assigned'} (${vol.vehicle || 'vehicle'}) • 📞 ${vol.contact || 'N/A'}<br>
+            <strong>Route:</strong> ${pickup.verdict_message || 'Route active'}<br>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--on-surface-var);">
+              Total: ${pickup.total_distance_km || 0} km • ~⏱️ ${Math.round(pickup.total_eta_minutes || 0)} mins transit
+            </span>
+          </div>
+        `;
+        document.getElementById('route-summary-tag').innerText = `${pickup.total_distance_km || 0} km • ~⏱️ ${Math.round(pickup.total_eta_minutes || 0)} min ETA`;
+      } else {
+        if (points.length) map.setView(points[0], 13);
+        itineraryHtml = '<strong>Route Status:</strong> Awaiting live mission dispatch.';
+        document.getElementById('route-summary-tag').innerText = 'Ready';
+      }
+
+      document.getElementById('mission-itinerary').innerHTML = itineraryHtml;
+    }
+
+    async function runMission(overrides) {
+      const text = document.getElementById('live-listing-input').value.trim();
+      const simTime = document.getElementById('simulated-time-input').value;
+      const btn = document.getElementById('btn-run-live');
+
+      btn.innerHTML = '<span>⏳ Processing...</span>';
+      btn.disabled = true;
+
+      try {
+        const payload = {
+          text: text,
+          simulatedNow: simTime ? `2026-10-15T${simTime}:00+05:30` : null,
+          overrideJson: overrides || null
+        };
+
+        const res = await fetch('/api/annasetu/run', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const resp = await res.json();
+        if (resp.success && resp.data) {
+          renderRunResult(resp.data);
+          loadLiveStats();
+          loadRecentRuns();
+          showToast(resp.data.status === 'NEEDS_INFO' ? '⚠️ Clarification needed' : '✓ Mission dispatched successfully!');
+        } else {
+          showToast(`Error: ${resp.error || 'Pipeline execution failed'}`);
+        }
+      } catch (err) {
+        console.error("Run error:", err);
+        showToast("Network / execution failure.");
+      } finally {
+        btn.innerHTML = '<span>⚡ Run Mission</span>';
+        btn.disabled = false;
+      }
+    }
+
+    // Tab Switching for WhatsApp Alerts
+    document.querySelectorAll('.tab-mini').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab-mini').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        activeMsgType = tab.dataset.msg;
+        if (currentRunData) renderMessages(currentRunData.notify);
+      });
+    });
+
+    // Copy Alert Message to Clipboard
+    document.getElementById('btn-copy-active').addEventListener('click', () => {
+      const text = document.getElementById('active-msg-preview').innerText;
+      if (!text || text.includes('Awaiting mission')) {
+        showToast("No alert message to copy.");
+        return;
+      }
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("✓ WhatsApp alert copied to clipboard!");
+      }).catch(() => {
+        showToast("Failed to copy to clipboard.");
+      });
+    });
+
+    // Sample Selector Handler
+    document.getElementById('demo-samples-select').addEventListener('change', function() {
+      if (this.value) {
+        document.getElementById('live-listing-input').value = this.value;
+      }
+    });
+
+    // Run Button and Enter Key Handlers
+    document.getElementById('btn-run-live').addEventListener('click', () => runMission());
+    document.getElementById('live-listing-input').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') runMission();
+    });
+
+    // "Re-run with Edits" Handler
+    document.getElementById('btn-rerun-edits').addEventListener('click', () => {
+      const edits = {
+        total_quantity: parseInt(document.getElementById('edit-qty').value) || 40,
+        area: document.getElementById('edit-area').value.trim(),
+        cooked_at: `2026-10-15T${document.getElementById('edit-cooked').value.trim()}:00+05:30`
+      };
+      runMission(edits);
+    });
+
+    // Clarifying Answer Submit Handler
+    document.getElementById('btn-clarify-submit').addEventListener('click', async () => {
+      const ans = document.getElementById('clarify-answer-input').value.trim();
+      if (!ans || !currentRunId) {
+        showToast("Please enter an answer to clarify the listing.");
+        return;
+      }
+
+      const btn = document.getElementById('btn-clarify-submit');
+      btn.innerText = "Submitting...";
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(`/api/annasetu/run/${currentRunId}/answer`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ answer: ans })
+        });
+        const resp = await res.json();
+        if (resp.success && resp.data) {
+          renderRunResult(resp.data);
+          loadLiveStats();
+          loadRecentRuns();
+          showToast(`✓ Information updated! Status: ${resp.data.status}`);
+        } else {
+          showToast(`Error: ${resp.error || "Failed to update"}`);
+        }
+      } catch (e) {
+        console.error("Answer submission error:", e);
+        showToast("Submission failed.");
+      } finally {
+        btn.innerText = "Submit Answer & Resume";
+        btn.disabled = false;
+      }
+    });
+
+    function showToast(msg) {
+      const slot = document.getElementById('toast-slot');
+      const t = document.createElement('div');
+      t.className = 'toast';
+      t.innerText = msg;
+      slot.appendChild(t);
+      setTimeout(() => {
+        t.style.opacity = '0';
+        t.style.transition = 'opacity 0.25s';
+        setTimeout(() => t.remove(), 250);
+      }, 2500);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initMap();
+      loadLiveStats();
+      loadRecentRuns();
+    });
+  </script>
+</body>
+</html>

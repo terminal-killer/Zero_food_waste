@@ -1,0 +1,13 @@
+id,name,area,lat,lng,capacity_meals,accepts,available_from,available_until,need_level,contact,notes
+REC01,Aashra Child Care Home (MOCK),Patia,20.3582,85.8164,35,both,07:00,22:30,5,9861001122,Orphanage shelter for 35 children
+REC02,Sneha Old Age Sanctuary (MOCK),Chandrasekharpur,20.3245,85.8148,40,veg,08:00,23:00,5,9861001123,Elderly home strictly vegetarian
+REC03,Utkal Seva Ashram (MOCK),Jaydev Vihar,20.3015,85.8210,60,both,06:30,23:30,4,9861001124,Community kitchen & homeless night shelter
+REC04,Karuna Transit Shelter (MOCK),Nayapalli,20.2940,85.8095,25,both,08:00,22:00,4,9861001125,Transient destitute shelter near stadium
+REC05,Sai Kripa Anath Ashram (MOCK),Saheed Nagar,20.2895,85.8462,50,veg,07:00,23:00,5,9861001126,Children home prefer hot vegetarian meals
+REC06,Ekamra Night Shelter (MOCK),Rasulgarh,20.2965,85.8640,45,both,18:00,02:00,4,9861001127,Migrant worker evening shelter
+REC07,Mother Teresa Home of Peace (MOCK),Unit 4,20.2745,85.8312,30,both,07:00,22:00,5,9861001128,Leprosy rehabilitation & shelter
+REC08,Khandagiri Tribal Student Home (MOCK),Khandagiri,20.2590,85.7815,70,both,07:30,22:30,3,9861001129,Hostel for underprivileged tribal students
+REC09,Bindu Sagar Community Kitchen (MOCK),Old Town,20.2410,85.8345,80,veg,10:00,23:59,4,9861001130,Pilgrim & street resident feeding center
+REC10,KIMS Slum Relief Center (MOCK),Patia,20.3510,85.8195,50,both,08:00,23:00,5,9861001131,Slum outreach program near KIIT/KIMS
+REC11,Bhubaneswar Railway Destitute Aid (MOCK),Saheed Nagar,20.2820,85.8410,35,both,17:00,01:00,4,9861001132,Night outreach around railway station
+REC12,Janani Shelter for Women (MOCK),Nayapalli,20.2980,85.8130,30,veg,08:00,22:30,4,9861001133,Women and infant shelter
