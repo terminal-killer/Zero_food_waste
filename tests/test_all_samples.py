@@ -7,7 +7,7 @@ if sys.stdout.encoding != 'utf-8':
 
 # Ensure Python path includes the orchestrator
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../skills/annasetu-orchestrator/scripts")))
-from orchestrate import run_annasetu_pipeline
+from orchestrate import execute_pipeline as run_annasetu_pipeline
 
 def run_all_samples():
     sample_path = os.path.join(os.path.dirname(__file__), "../data/sample_listings.txt")
@@ -28,7 +28,7 @@ def run_all_samples():
     results = []
     for idx, (header, text) in enumerate(samples, 1):
         print(f"\n>>>>>>>>>>>> RUNNING TEST CASE {idx}: {header} <<<<<<<<<<<<")
-        res = run_annasetu_pipeline(text, record_ledger=True)
+        res = run_annasetu_pipeline(text)
         results.append((header, res))
 
     print("\n" + "=" * 72)
