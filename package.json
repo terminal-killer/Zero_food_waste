@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "test": "node tests/api.test.js"
+    "dev": "node server.js",
+    "test": "node tests/api.test.js",
+    "test:pipeline": "python tests/test_all_samples.py"
   },
   "keywords": [
     "hackathon",
